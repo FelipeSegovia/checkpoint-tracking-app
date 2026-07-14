@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "atomic-design-fundamentals": {
+      "source": "thebushidocollective/han",
+      "sourceType": "github",
+      "skillPath": "plugins/patterns/atomic-design/skills/atomic-design-fundamentals/SKILL.md",
+      "computedHash": "4a2d3a077911fd8da7ac42c42ff120345e476078ede8f523c9a0a7b4e3eb7cc8"
+    },
+    "vercel-react-native-skills": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-native-skills/SKILL.md",
+      "computedHash": "41d24eafa7c3d82e270439808f7cfbc4d51aeb2d14f2809a2267c16275784d06"
+    }
+  }
+}
