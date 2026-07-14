@@ -1,26 +1,36 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '@/components/atoms/Button';
 import { FormField } from '@/components/molecules/FormField';
 import { borders, colors, spacing, typography } from '@/quarks';
 import { formatRut, getRutError, isValidRut } from '@/utils/rut';
 
+const MIN_PASSWORD_LENGTH = 8;
+
 type LoginFormProps = {
+  isSubmitting?: boolean;
+  errorMessage?: string;
   onSubmit?: (credentials: { rut: string; password: string }) => void;
   onForgotPassword?: () => void;
 };
 
-export function LoginForm({ onSubmit, onForgotPassword }: LoginFormProps) {
+export function LoginForm({
+  isSubmitting = false,
+  errorMessage,
+  onSubmit,
+  onForgotPassword,
+}: LoginFormProps) {
   const [rut, setRut] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [rutTouched, setRutTouched] = useState(false);
 
   const rutError = rutTouched ? getRutError(rut) : undefined;
-  const canSubmit = isValidRut(rut) && password.length > 0;
+  const canSubmit =
+    isValidRut(rut) && password.length >= MIN_PASSWORD_LENGTH && !isSubmitting;
 
   const handleRutChange = (value: string) => {
     setRut(formatRut(value));
@@ -42,6 +52,7 @@ export function LoginForm({ onSubmit, onForgotPassword }: LoginFormProps) {
         <FormField
           autoCapitalize="characters"
           autoCorrect={false}
+          editable={!isSubmitting}
           error={rutError}
           keyboardType="default"
           label="Rut de colaborador"
@@ -55,6 +66,7 @@ export function LoginForm({ onSubmit, onForgotPassword }: LoginFormProps) {
         <FormField
           autoCapitalize="none"
           autoCorrect={false}
+          editable={!isSubmitting}
           label="Contraseña"
           onChangeText={setPassword}
           onSubmitEditing={handleSubmit}
@@ -81,15 +93,23 @@ export function LoginForm({ onSubmit, onForgotPassword }: LoginFormProps) {
         />
       </View>
 
+      {errorMessage ? <Text style={styles.formError}>{errorMessage}</Text> : null}
+
       <Button disabled={!canSubmit} onPress={handleSubmit}>
-        <Button.Text>Iniciar Sesión</Button.Text>
-        <Button.Icon>
-          <MaterialCommunityIcons
-            name="login"
-            size={20}
-            color={colors.textOnPrimary}
-          />
-        </Button.Icon>
+        {isSubmitting ? (
+          <ActivityIndicator color={colors.textOnPrimary} />
+        ) : (
+          <>
+            <Button.Text>Iniciar Sesión</Button.Text>
+            <Button.Icon>
+              <MaterialCommunityIcons
+                name="login"
+                size={20}
+                color={colors.textOnPrimary}
+              />
+            </Button.Icon>
+          </>
+        )}
       </Button>
 
       <Pressable accessibilityRole="link" onPress={onForgotPassword}>
@@ -118,6 +138,11 @@ const styles = StyleSheet.create({
   },
   fields: {
     gap: spacing.sm,
+  },
+  formError: {
+    color: colors.error,
+    fontSize: typography.fontSize.sm,
+    textAlign: 'center',
   },
   forgotPassword: {
     color: colors.link,
