@@ -1,19 +1,53 @@
-import { useRouter } from 'expo-router';
-import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { Redirect, useRouter } from 'expo-router';
+import { useState } from 'react';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { getErrorMessage } from '@/api/errors';
 import { DotGrid } from '@/components/atoms/DotGrid';
 import { LoginFooter } from '@/components/organisms/LoginFooter';
 import { LoginForm } from '@/components/organisms/LoginForm';
 import { LoginHeader } from '@/components/organisms/LoginHeader';
+import { useAuth } from '@/contexts/auth-context';
 import { colors, spacing } from '@/quarks';
 
 export function LoginPage() {
   const { replace } = useRouter();
+  const { signIn, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const insets = useSafeAreaInsets();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
-  const handleSubmit = () => {
-    replace('/(tabs)');
+  if (isAuthLoading) {
+    return (
+      <View style={[styles.screen, styles.centered]}>
+        <ActivityIndicator color={colors.primary} size="large" />
+      </View>
+    );
+  }
+
+  if (isAuthenticated) {
+    return <Redirect href="/(tabs)" />;
+  }
+
+  const handleSubmit = async ({
+    rut,
+    password,
+  }: {
+    rut: string;
+    password: string;
+  }) => {
+    setErrorMessage(undefined);
+    setIsSubmitting(true);
+
+    try {
+      await signIn({ identityNumber: rut, password });
+      replace('/(tabs)');
+    } catch (error) {
+      setErrorMessage(getErrorMessage(error));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -34,7 +68,11 @@ export function LoginPage() {
         >
           <View style={styles.main}>
             <LoginHeader />
-            <LoginForm onSubmit={handleSubmit} />
+            <LoginForm
+              errorMessage={errorMessage}
+              isSubmitting={isSubmitting}
+              onSubmit={handleSubmit}
+            />
           </View>
           <LoginFooter />
         </View>
@@ -47,6 +85,10 @@ const styles = StyleSheet.create({
   screen: {
     backgroundColor: colors.background,
     flex: 1,
+  },
+  centered: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   flex: {
     flex: 1,
