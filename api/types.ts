@@ -36,6 +36,28 @@ export type CheckpointResponse = {
   updatedAt: string;
 };
 
+export type CreateUserRequest = {
+  firstName: string;
+  lastName: string;
+  birthdate: string; // dd-mm-YYYY
+  identityNumber: string;
+  mobilePhone: string;
+  email: string;
+  password: string;
+  role: UserRole;
+  supervisorId?: string;
+};
+
+export type UpdateUserRequest = {
+  firstName?: string;
+  lastName?: string;
+  birthdate?: string;
+  identityNumber?: string;
+  mobilePhone?: string;
+  email?: string;
+  password?: string;
+};
+
 export type CreateEstablishmentRequest = {
   name: string;
   address: string;
