@@ -1,0 +1,1 @@
+export { EstablishmentDetailHeader } from './EstablishmentDetailHeader';

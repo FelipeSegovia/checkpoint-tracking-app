@@ -1,6 +1,5 @@
-import { Redirect, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { getErrorMessage } from '@/api/errors';
@@ -12,23 +11,10 @@ import { useAuth } from '@/contexts/auth-context';
 import { colors, spacing } from '@/quarks';
 
 export function LoginPage() {
-  const { replace } = useRouter();
-  const { signIn, isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const { signIn } = useAuth();
   const insets = useSafeAreaInsets();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
-
-  if (isAuthLoading) {
-    return (
-      <View style={[styles.screen, styles.centered]}>
-        <ActivityIndicator color={colors.primary} size="large" />
-      </View>
-    );
-  }
-
-  if (isAuthenticated) {
-    return <Redirect href="/(tabs)" />;
-  }
 
   const handleSubmit = async ({
     rut,
@@ -41,8 +27,9 @@ export function LoginPage() {
     setIsSubmitting(true);
 
     try {
+      // Al guardarse la sesión, las rutas protegidas del root layout
+      // cambian automáticamente a (tabs); no se navega manualmente.
       await signIn({ identityNumber: rut, password });
-      replace('/(tabs)');
     } catch (error) {
       setErrorMessage(getErrorMessage(error));
     } finally {

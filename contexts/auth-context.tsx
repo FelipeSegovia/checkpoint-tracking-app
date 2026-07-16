@@ -6,7 +6,7 @@ import {
   type ReactNode,
 } from 'react';
 
-import { login as loginRequest } from '@/api/auth';
+import { login as loginRequest, logout as logoutRequest } from '@/api/auth';
 import type { LoginRequest, UserRole } from '@/api/types';
 import {
   clearSession,
@@ -57,6 +57,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
+    // Revoca el token en el backend; si falla (expirado/revocado/red),
+    // igual se limpia la sesión local para no bloquear el cierre.
+    if (session?.accessToken) {
+      try {
+        await logoutRequest(session.accessToken);
+      } catch {
+        // Ignorado a propósito: el logout local debe completarse siempre.
+      }
+    }
     await clearSession();
     setSession(null);
   };
