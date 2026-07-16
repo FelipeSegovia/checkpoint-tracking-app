@@ -1,9 +1,9 @@
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { memo } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { memo } from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { StatusBadge } from '@/components/atoms/StatusBadge';
-import { borders, colors, spacing, typography } from '@/quarks';
+import { StatusBadge } from "@/components/atoms/StatusBadge";
+import { borders, colors, spacing, typography } from "@/quarks";
 
 type CheckpointItemProps = {
   name: string;
@@ -42,8 +42,8 @@ export const CheckpointItem = memo(function CheckpointItem({
       </View>
 
       <StatusBadge
-        label={isActive ? 'Active' : 'Inactive'}
-        status={isActive ? 'active' : 'inactive'}
+        label={isActive ? "Activo" : "Deshabilitado"}
+        status={isActive ? "active" : "inactive"}
       />
     </Pressable>
   );
@@ -51,13 +51,13 @@ export const CheckpointItem = memo(function CheckpointItem({
 
 const styles = StyleSheet.create({
   row: {
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: colors.surface,
     borderColor: colors.surfaceBorder,
-    borderCurve: 'continuous',
+    borderCurve: "continuous",
     borderRadius: borders.radius.md,
     borderWidth: borders.width.thin,
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: spacing.sm,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
@@ -67,12 +67,12 @@ const styles = StyleSheet.create({
     transform: [{ scale: 0.98 }],
   },
   iconBox: {
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: colors.primaryDark,
-    borderCurve: 'continuous',
+    borderCurve: "continuous",
     borderRadius: borders.radius.sm,
     height: 36,
-    justifyContent: 'center',
+    justifyContent: "center",
     width: 36,
   },
   content: {

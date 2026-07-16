@@ -171,7 +171,7 @@ export function EstablishmentDetailPage() {
         >
           <Ionicons color={colors.text} name="arrow-back" size={22} />
         </Pressable>
-        <Text style={styles.brand}>Checkpoint Tracking</Text>
+        <Text style={styles.brand}>Ronda Segura</Text>
         <View style={styles.topActions}>
           <Pressable
             accessibilityLabel="Notificaciones"

@@ -11,6 +11,7 @@ import {
   getEstablishments,
 } from "@/api";
 import type { EstablishmentResponse } from "@/api/types";
+import { CreateEstablishmentModal } from "@/components/organisms/CreateEstablishmentModal";
 import {
   EstablishmentList,
   type EstablishmentListItem,
@@ -29,6 +30,7 @@ export function EstablishmentsPage() {
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const [totalCheckpoints, setTotalCheckpoints] = useState(0);
   const [totalGuards, setTotalGuards] = useState(0);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const loadEstablishments = useCallback(async () => {
     if (!accessToken) return;
@@ -93,9 +95,17 @@ export function EstablishmentsPage() {
     [push],
   );
 
-  const handleCreatePress = () => {
-    // Flujo de creación pendiente de pantalla modal/formulario.
-  };
+  const handleCreatePress = useCallback(() => {
+    setShowCreateModal(true);
+  }, []);
+
+  const handleCreateClose = useCallback(() => {
+    setShowCreateModal(false);
+  }, []);
+
+  const handleCreated = useCallback(() => {
+    void loadEstablishments();
+  }, [loadEstablishments]);
 
   const listHeader = (
     <View style={styles.headerBlock}>
@@ -103,7 +113,7 @@ export function EstablishmentsPage() {
         <View style={styles.avatar}>
           <Ionicons color={colors.primary} name="person" size={18} />
         </View>
-        <Text style={styles.brand}>Checkpoint Tracking</Text>
+        <Text style={styles.brand}>Ronda Segura</Text>
         <Pressable
           accessibilityLabel="Notificaciones"
           accessibilityRole="button"
@@ -168,6 +178,12 @@ export function EstablishmentsPage() {
           <Ionicons color={colors.textOnPrimary} name="add" size={28} />
         </Pressable>
       </View>
+
+      <CreateEstablishmentModal
+        onClose={handleCreateClose}
+        onCreated={handleCreated}
+        visible={showCreateModal}
+      />
     </View>
   );
 }
