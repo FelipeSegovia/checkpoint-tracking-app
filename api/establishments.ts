@@ -2,6 +2,7 @@ import { apiRequest } from '@/api/client';
 import type {
   CreateEstablishmentRequest,
   EstablishmentResponse,
+  UpdateEstablishmentRequest,
   UserResponse,
 } from '@/api/types';
 
@@ -51,6 +52,30 @@ export function createEstablishment(
   return apiRequest<EstablishmentResponse>('/establishments', {
     method: 'POST',
     body: data,
+    auth: true,
+    token,
+  });
+}
+
+export function updateEstablishment(
+  id: string,
+  data: UpdateEstablishmentRequest,
+  { token }: TokenOption,
+): Promise<EstablishmentResponse> {
+  return apiRequest<EstablishmentResponse>(`/establishments/${id}`, {
+    method: 'PATCH',
+    body: data,
+    auth: true,
+    token,
+  });
+}
+
+export function deleteEstablishment(
+  id: string,
+  { token }: TokenOption,
+): Promise<void> {
+  return apiRequest<void>(`/establishments/${id}`, {
+    method: 'DELETE',
     auth: true,
     token,
   });

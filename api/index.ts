@@ -10,9 +10,11 @@ export { apiRequest } from '@/api/client';
 export { getApiBaseUrl } from '@/api/config';
 export {
   createEstablishment,
+  deleteEstablishment,
   getEstablishmentById,
   getEstablishmentCollaborators,
   getEstablishments,
+  updateEstablishment,
 } from '@/api/establishments';
 export { ApiError, getErrorMessage } from '@/api/errors';
 export type {
@@ -24,6 +26,7 @@ export type {
   LoginRequest,
   LoginResponse,
   UpdateCheckpointRequest,
+  UpdateEstablishmentRequest,
   UserResponse,
   UserRole,
 } from '@/api/types';

@@ -42,6 +42,11 @@ export type CreateEstablishmentRequest = {
   supervisorId?: string;
 };
 
+export type UpdateEstablishmentRequest = {
+  name?: string;
+  address?: string;
+};
+
 export type CreateCheckpointRequest = {
   name: string;
   establishmentId: string;

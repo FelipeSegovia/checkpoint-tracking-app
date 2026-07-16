@@ -34,6 +34,7 @@ import {
 } from "@/components/organisms/CollaboratorList";
 import { CreateCheckpointModal } from "@/components/organisms/CreateCheckpointModal";
 import { EditCheckpointModal } from "@/components/organisms/EditCheckpointModal";
+import { EditEstablishmentModal } from "@/components/organisms/EditEstablishmentModal";
 import { EstablishmentDetailHeader } from "@/components/organisms/EstablishmentDetailHeader";
 import { useAuth } from "@/contexts/auth-context";
 import { borders, colors, spacing, typography } from "@/quarks";
@@ -61,6 +62,7 @@ export function EstablishmentDetailPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [selectedCheckpointId, setSelectedCheckpointId] = useState<
     string | null
   >(null);
@@ -198,6 +200,7 @@ export function EstablishmentDetailPage() {
         <EstablishmentDetailHeader
           address={establishment.address}
           name={establishment.name}
+          onEdit={() => setIsEditModalVisible(true)}
           onNewCheckpoint={() => setIsCreateModalVisible(true)}
         />
 
@@ -240,6 +243,19 @@ export function EstablishmentDetailPage() {
           visible={isCreateModalVisible}
         />
       ) : null}
+
+      <EditEstablishmentModal
+        establishment={{
+          id: establishment.id,
+          name: establishment.name,
+          address: establishment.address,
+          isActive: establishment.isActive,
+        }}
+        onClose={() => setIsEditModalVisible(false)}
+        onDisabled={back}
+        onUpdated={loadDetail}
+        visible={isEditModalVisible}
+      />
 
       <EditCheckpointModal
         checkpoint={
