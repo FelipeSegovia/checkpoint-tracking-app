@@ -1,5 +1,9 @@
 import { apiRequest } from '@/api/client';
-import type { CheckpointResponse, CreateCheckpointRequest } from '@/api/types';
+import type {
+  CheckpointResponse,
+  CreateCheckpointRequest,
+  UpdateCheckpointRequest,
+} from '@/api/types';
 
 type TokenOption = {
   token: string;
@@ -42,6 +46,30 @@ export function createCheckpoint(
   return apiRequest<CheckpointResponse>('/checkpoints', {
     method: 'POST',
     body: data,
+    auth: true,
+    token,
+  });
+}
+
+export function updateCheckpoint(
+  id: string,
+  data: UpdateCheckpointRequest,
+  { token }: TokenOption,
+): Promise<CheckpointResponse> {
+  return apiRequest<CheckpointResponse>(`/checkpoints/${id}`, {
+    method: 'PATCH',
+    body: data,
+    auth: true,
+    token,
+  });
+}
+
+export function deleteCheckpoint(
+  id: string,
+  { token }: TokenOption,
+): Promise<void> {
+  return apiRequest<void>(`/checkpoints/${id}`, {
+    method: 'DELETE',
     auth: true,
     token,
   });

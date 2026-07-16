@@ -1,6 +1,6 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { memo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { StatusBadge } from '@/components/atoms/StatusBadge';
 import { borders, colors, spacing, typography } from '@/quarks';
@@ -9,15 +9,21 @@ type CheckpointItemProps = {
   name: string;
   code: string;
   isActive: boolean;
+  onPress?: () => void;
 };
 
 export const CheckpointItem = memo(function CheckpointItem({
   name,
   code,
   isActive,
+  onPress,
 }: CheckpointItemProps) {
   return (
-    <View style={styles.row}>
+    <Pressable
+      accessibilityRole="button"
+      onPress={onPress}
+      style={({ pressed }) => [styles.row, pressed ? styles.pressed : null]}
+    >
       <View style={styles.iconBox}>
         <MaterialCommunityIcons
           color={colors.primary}
@@ -39,7 +45,7 @@ export const CheckpointItem = memo(function CheckpointItem({
         label={isActive ? 'Active' : 'Inactive'}
         status={isActive ? 'active' : 'inactive'}
       />
-    </View>
+    </Pressable>
   );
 });
 
@@ -55,6 +61,10 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
+  },
+  pressed: {
+    opacity: 0.88,
+    transform: [{ scale: 0.98 }],
   },
   iconBox: {
     alignItems: 'center',

@@ -47,6 +47,10 @@ export type CreateCheckpointRequest = {
   establishmentId: string;
 };
 
+export type UpdateCheckpointRequest = {
+  name?: string;
+};
+
 export type ErrorResponse = {
   statusCode: number;
   message: string | string[];

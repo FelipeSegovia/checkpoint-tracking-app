@@ -1,8 +1,10 @@
 export { login, logout } from '@/api/auth';
 export {
   createCheckpoint,
+  deleteCheckpoint,
   getCheckpointById,
   getCheckpoints,
+  updateCheckpoint,
 } from '@/api/checkpoints';
 export { apiRequest } from '@/api/client';
 export { getApiBaseUrl } from '@/api/config';
@@ -21,6 +23,7 @@ export type {
   EstablishmentResponse,
   LoginRequest,
   LoginResponse,
+  UpdateCheckpointRequest,
   UserResponse,
   UserRole,
 } from '@/api/types';

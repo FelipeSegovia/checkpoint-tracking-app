@@ -17,6 +17,7 @@ type CheckpointListProps = {
   emptyMessage?: string;
   onFilterPress?: () => void;
   onExportPress?: () => void;
+  onItemPress?: (id: string) => void;
 };
 
 export function CheckpointList({
@@ -24,6 +25,7 @@ export function CheckpointList({
   emptyMessage = 'No hay puntos de control.',
   onFilterPress,
   onExportPress,
+  onItemPress,
 }: CheckpointListProps) {
   return (
     <View style={styles.container}>
@@ -70,6 +72,7 @@ export function CheckpointList({
               isActive={item.isActive}
               key={item.id}
               name={item.name}
+              onPress={() => onItemPress?.(item.id)}
             />
           ))
         )}

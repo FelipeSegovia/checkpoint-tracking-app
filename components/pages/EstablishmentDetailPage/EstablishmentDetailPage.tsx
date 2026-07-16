@@ -32,6 +32,8 @@ import {
   CollaboratorList,
   type CollaboratorListItem,
 } from "@/components/organisms/CollaboratorList";
+import { CreateCheckpointModal } from "@/components/organisms/CreateCheckpointModal";
+import { EditCheckpointModal } from "@/components/organisms/EditCheckpointModal";
 import { EstablishmentDetailHeader } from "@/components/organisms/EstablishmentDetailHeader";
 import { useAuth } from "@/contexts/auth-context";
 import { borders, colors, spacing, typography } from "@/quarks";
@@ -58,6 +60,10 @@ export function EstablishmentDetailPage() {
   );
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+  const [selectedCheckpointId, setSelectedCheckpointId] = useState<
+    string | null
+  >(null);
 
   const loadDetail = useCallback(async () => {
     if (!accessToken || !id) return;
@@ -105,6 +111,11 @@ export function EstablishmentDetailPage() {
   useEffect(() => {
     void loadDetail();
   }, [loadDetail]);
+
+  const selectedCheckpoint =
+    selectedCheckpointId === null
+      ? null
+      : (checkpoints.find((item) => item.id === selectedCheckpointId) ?? null);
 
   if (isLoading) {
     return (
@@ -187,6 +198,7 @@ export function EstablishmentDetailPage() {
         <EstablishmentDetailHeader
           address={establishment.address}
           name={establishment.name}
+          onNewCheckpoint={() => setIsCreateModalVisible(true)}
         />
 
         <View style={styles.statsRow}>
@@ -213,9 +225,36 @@ export function EstablishmentDetailPage() {
           Cumplimiento de rondas disponible cuando el endpoint esté listo.
         </Text>
 
-        <CheckpointList data={checkpoints} />
+        <CheckpointList
+          data={checkpoints}
+          onItemPress={setSelectedCheckpointId}
+        />
         <CollaboratorList data={collaborators} />
       </ScrollView>
+
+      {id ? (
+        <CreateCheckpointModal
+          establishmentId={id}
+          onClose={() => setIsCreateModalVisible(false)}
+          onCreated={loadDetail}
+          visible={isCreateModalVisible}
+        />
+      ) : null}
+
+      <EditCheckpointModal
+        checkpoint={
+          selectedCheckpoint
+            ? {
+                id: selectedCheckpoint.id,
+                name: selectedCheckpoint.name,
+                isActive: selectedCheckpoint.isActive,
+              }
+            : null
+        }
+        onClose={() => setSelectedCheckpointId(null)}
+        onUpdated={loadDetail}
+        visible={selectedCheckpoint !== null}
+      />
     </View>
   );
 }
