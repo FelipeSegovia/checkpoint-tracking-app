@@ -29,6 +29,24 @@ type CreateCollaboratorModalProps = {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const BIRTHDATE_REGEX = /^\d{2}-\d{2}-\d{4}$/;
 
+function formatBirthdateInput(raw: string, previous: string): string {
+  const digits = raw.replace(/\D/g, '').slice(0, 8);
+
+  const wasDeleting = raw.length < previous.length;
+  if (wasDeleting) {
+    const rawDigits = raw.replace(/\D/g, '');
+    if (rawDigits.length <= 2) return rawDigits;
+    if (rawDigits.length <= 4)
+      return `${rawDigits.slice(0, 2)}-${rawDigits.slice(2)}`;
+    return `${rawDigits.slice(0, 2)}-${rawDigits.slice(2, 4)}-${rawDigits.slice(4)}`;
+  }
+
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 4)
+    return `${digits.slice(0, 2)}-${digits.slice(2)}`;
+  return `${digits.slice(0, 2)}-${digits.slice(2, 4)}-${digits.slice(4)}`;
+}
+
 function isValidBirthdate(value: string): boolean {
   if (!BIRTHDATE_REGEX.test(value)) return false;
 
@@ -344,10 +362,11 @@ export function CreateCollaboratorModal({
           <FormField
             editable={!isSubmitting}
             error={birthdateError}
-            keyboardType="numbers-and-punctuation"
+            keyboardType="number-pad"
             label="Fecha de nacimiento"
+            maxLength={10}
             onChangeText={(value) => {
-              setBirthdate(value);
+              setBirthdate(formatBirthdateInput(value, birthdate));
               if (birthdateError) setBirthdateError(undefined);
             }}
             placeholder="dd-mm-YYYY"
