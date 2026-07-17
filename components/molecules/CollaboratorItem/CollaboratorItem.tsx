@@ -5,9 +5,11 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { borders, colors, spacing, typography } from '@/quarks';
 
 type CollaboratorItemProps = {
+  id?: string;
   firstName: string;
   lastName: string;
   subtitle: string;
+  onPress?: (id: string) => void;
   onPressMenu?: () => void;
 };
 
@@ -18,16 +20,18 @@ function getInitials(firstName: string, lastName: string): string {
 }
 
 export const CollaboratorItem = memo(function CollaboratorItem({
+  id,
   firstName,
   lastName,
   subtitle,
+  onPress,
   onPressMenu,
 }: CollaboratorItemProps) {
   const fullName = `${firstName} ${lastName}`.trim();
   const initials = getInitials(firstName, lastName);
 
-  return (
-    <View style={styles.row}>
+  const content = (
+    <>
       <View style={styles.avatar}>
         <Text style={styles.initials}>{initials}</Text>
       </View>
@@ -51,8 +55,23 @@ export const CollaboratorItem = memo(function CollaboratorItem({
           <Ionicons color={colors.textMuted} name="ellipsis-vertical" size={18} />
         </Pressable>
       ) : null}
-    </View>
+    </>
   );
+
+  if (onPress && id) {
+    return (
+      <Pressable
+        accessibilityLabel={fullName}
+        accessibilityRole="button"
+        onPress={() => onPress(id)}
+        style={({ pressed }) => [styles.row, pressed ? styles.pressed : null]}
+      >
+        {content}
+      </Pressable>
+    );
+  }
+
+  return <View style={styles.row}>{content}</View>;
 });
 
 const styles = StyleSheet.create({
@@ -94,5 +113,8 @@ const styles = StyleSheet.create({
   subtitle: {
     color: colors.textSecondary,
     fontSize: typography.fontSize.sm,
+  },
+  pressed: {
+    opacity: 0.88,
   },
 });

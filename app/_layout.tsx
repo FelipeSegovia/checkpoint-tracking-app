@@ -52,6 +52,10 @@ function RootNavigator() {
           name="establishments/[id]"
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="collaborators/[id]"
+          options={{ headerShown: false }}
+        />
       </Stack.Protected>
 
       <Stack.Screen

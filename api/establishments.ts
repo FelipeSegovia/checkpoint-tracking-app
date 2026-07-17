@@ -80,3 +80,31 @@ export function deleteEstablishment(
     token,
   });
 }
+
+export function assignCollaborator(
+  establishmentId: string,
+  collaboratorId: string,
+  { token }: TokenOption,
+): Promise<void> {
+  return apiRequest<void>(`/establishments/${establishmentId}/collaborators`, {
+    method: 'POST',
+    body: { collaboratorId },
+    auth: true,
+    token,
+  });
+}
+
+export function removeCollaborator(
+  establishmentId: string,
+  collaboratorId: string,
+  { token }: TokenOption,
+): Promise<void> {
+  return apiRequest<void>(
+    `/establishments/${establishmentId}/collaborators/${collaboratorId}`,
+    {
+      method: 'DELETE',
+      auth: true,
+      token,
+    },
+  );
+}
