@@ -14,12 +14,14 @@ import {
   saveSession,
   type StoredSession,
 } from '@/lib/auth-storage';
+import { decodeJwtPayload } from '@/lib/jwt';
 
 type AuthContextValue = {
   isLoading: boolean;
   isAuthenticated: boolean;
   accessToken: string | null;
   role: UserRole | null;
+  userId: string | null;
   signIn: (credentials: LoginRequest) => Promise<void>;
   signOut: () => Promise<void>;
 };
@@ -48,9 +50,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (credentials: LoginRequest) => {
     const response = await loginRequest(credentials);
+    const { sub: userId } = decodeJwtPayload(response.accessToken);
     const nextSession: StoredSession = {
       accessToken: response.accessToken,
       role: response.role,
+      userId,
     };
     await saveSession(nextSession);
     setSession(nextSession);
@@ -77,6 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!session?.accessToken,
         accessToken: session?.accessToken ?? null,
         role: session?.role ?? null,
+        userId: session?.userId ?? null,
         signIn,
         signOut,
       }}

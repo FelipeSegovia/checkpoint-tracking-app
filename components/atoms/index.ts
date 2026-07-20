@@ -1,5 +1,6 @@
 export { Button } from './Button';
 export { DotGrid } from './DotGrid';
+export { EmptyState } from './EmptyState';
 export { Label } from './Label';
 export { LogoMark } from './LogoMark';
 export { SectionHeader } from './SectionHeader';

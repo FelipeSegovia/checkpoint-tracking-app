@@ -25,6 +25,8 @@ const MAPPING = {
   'building.2.fill': 'apartment',
   'person.2.fill': 'group',
   'gearshape.fill': 'settings',
+  'map.fill': 'map',
+  'qrcode.viewfinder': 'qr-code-scanner',
 } as IconMapping;
 
 /**

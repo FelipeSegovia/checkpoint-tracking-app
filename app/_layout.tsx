@@ -20,7 +20,8 @@ const TacticalTheme = {
 };
 
 function RootNavigator() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, role } = useAuth();
+  const isCollaborator = role === 'colaborador';
 
   if (isLoading) {
     return (
@@ -46,7 +47,7 @@ function RootNavigator() {
         <Stack.Screen name="index" options={{ headerShown: false }} />
       </Stack.Protected>
 
-      <Stack.Protected guard={isAuthenticated}>
+      <Stack.Protected guard={isAuthenticated && !isCollaborator}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
           name="establishments/[id]"
@@ -56,6 +57,10 @@ function RootNavigator() {
           name="collaborators/[id]"
           options={{ headerShown: false }}
         />
+      </Stack.Protected>
+
+      <Stack.Protected guard={isAuthenticated && isCollaborator}>
+        <Stack.Screen name="(collaborator)" options={{ headerShown: false }} />
       </Stack.Protected>
 
       <Stack.Screen

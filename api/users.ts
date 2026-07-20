@@ -38,6 +38,16 @@ export function getUserById(
   });
 }
 
+export function getMyProfile({
+  userId,
+  token,
+}: {
+  userId: string;
+  token: string;
+}): Promise<UserResponse> {
+  return getUserById(userId, { token });
+}
+
 export function createUser(
   data: CreateUserRequest,
   { token }: TokenOption,

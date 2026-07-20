@@ -1,0 +1,1 @@
+export { CollaboratorSettingsPage } from './CollaboratorSettingsPage';

@@ -13,6 +13,7 @@ export { EstablishmentStats } from './EstablishmentStats';
 export { LoginFooter } from './LoginFooter';
 export { LoginForm } from './LoginForm';
 export { LoginHeader } from './LoginHeader';
+export { QRScanner } from './QRScanner';
 export { TeamList } from './TeamList';
 export type { TeamListItem } from './TeamList';
 export { TeamStats } from './TeamStats';

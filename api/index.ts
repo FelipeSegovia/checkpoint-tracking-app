@@ -22,6 +22,7 @@ export { ApiError, getErrorMessage } from '@/api/errors';
 export {
   createUser,
   deleteUser,
+  getMyProfile,
   getUserById,
   getUsers,
   updateUser,

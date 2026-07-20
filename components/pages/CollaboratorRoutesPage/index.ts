@@ -1,0 +1,1 @@
+export { CollaboratorRoutesPage } from './CollaboratorRoutesPage';
